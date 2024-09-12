@@ -4,22 +4,26 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primaryColor = Color.fromRGBO(66, 164, 255, 1);
   static const Color secondaryColor = Color.fromARGB(255, 5, 5, 5);
+  static const Color titelColor = Colors.black;
   static const Color bouttonColor = Color.fromRGBO(238, 136, 42, 1);
   static const Color bouttonOffColor = Color.fromRGBO(253, 25, 25, 1);
   static const Color bouttonOnColor = Color.fromRGBO(66, 164, 255, 1);
   static const Color texteColor = Color.fromARGB(255, 248, 247, 246);
   static const Color backgrounColorFilled = Color.fromARGB(255, 248, 247, 246);
+  static const Color backgrounColor = Color.fromARGB(240, 248, 253, 253);
   static const Color borderColorFilledActive = Color.fromRGBO(238, 136, 42, 1);
   static const Color hintTextColor = Color.fromRGBO(143, 140, 140, 1);
+  static const Color navbarColor = Color.fromRGBO(38, 50, 56, 1);
+  static const Color grisColor = Color.fromRGBO(29, 29, 29, 1);
 }
 
 // Définir les styles de texte
 class AppTextStyles {
   static const TextStyle titre1 = TextStyle(
     fontSize: 24,
-    fontFamily: 'Times New Roman',
-    fontWeight: FontWeight.bold,
-    color: AppColors.secondaryColor,
+    fontFamily: 'Roboto',
+    // fontWeight: FontWeight.bold,
+    color: AppColors.titelColor,
   );
 
   static const TextStyle titre2 = TextStyle(
@@ -31,23 +35,23 @@ class AppTextStyles {
   static const TextStyle bodyText = TextStyle(
     fontSize: 16,
     color: AppColors.secondaryColor,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Roboto',
   );
 
   static const TextStyle textbody3 = TextStyle(
     fontSize: 12,
     color: AppColors.secondaryColor,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Roboto',
   );
   static const TextStyle textbody4 = TextStyle(
     fontSize: 9,
     color: AppColors.texteColor,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Roboto',
   );
   static const TextStyle textbutton1 = TextStyle(
-    fontSize: 18,
+    fontSize: 16,
     color: AppColors.texteColor,
-    fontFamily: 'Times New Roman',
+    fontFamily: 'Roboto',
   );
 }
 
@@ -62,6 +66,7 @@ class AppButtonStyles {
     textStyle: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
@@ -76,6 +81,7 @@ class AppButtonStyles {
     textStyle: TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
@@ -102,6 +108,7 @@ class AppButtonStyles {
     textStyle: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
     ),
   );
 }

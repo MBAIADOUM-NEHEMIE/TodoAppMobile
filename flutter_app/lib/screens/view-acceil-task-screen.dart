@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/fonctions_util/all-fonctions-util.dart';
 import 'package:flutter_app/themes-styles/app-theme.dart';
 import 'package:flutter_app/pages/page-formulaire-login.dart';
-import 'package:flutter_app/widgets/widget-superieur.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_app/widgets/widget-alls-create.dart';
 
 class AccueilTaskScreen extends StatelessWidget {
   @override
@@ -21,7 +21,7 @@ class AccueilTaskScreen extends StatelessWidget {
             WidgetSuperieur(
               svgImagePath: 'assets/images/widget-sup.svg',
               pngImagePath: 'assets/images/image-group-widget-supp.png',
-              appBarTitle: 'To-do Liste',
+              // appBarTitle: 'To-do Liste',
             ),
             Expanded(
               child: Padding(
@@ -45,7 +45,7 @@ class AccueilTaskScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            child: ElevatedButton(
+                            child: builderLoginButton(
                               onPressed: () {
                                 // Navigation vers la page du formulaire
                                 Navigator.push(
@@ -57,7 +57,8 @@ class AccueilTaskScreen extends StatelessWidget {
 
                                 // Logique du bouton ici
                               },
-                              child: Text('Lets Start'),
+                              // child: Text('Lets Start'),
+                              buttonText: 'Lets Start',
                             ),
                           ),
                         ],

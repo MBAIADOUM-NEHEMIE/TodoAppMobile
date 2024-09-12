@@ -1,17 +1,28 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'groupe-task.g.dart';
+
+@JsonSerializable()
 class GroupeTask {
-  //-------------------------- Declaration des Variables -----------------//
+  //-------------------------- Déclaration des Variables -----------------//
 
   final int id;
   final String nom;
   final String description;
+  final String icon;
 
-// -----------  Constructeur pour Initialiser une Instance de groupe de Tâche ---------------//
+  // -----------  Constructeur pour Initialiser une Instance de Groupe de Tâche ---------------//
 
   GroupeTask({
     required this.id,
     required this.nom,
     required this.description,
+    required this.icon,
   });
 
-  // -----------  Methode pour creer une instance de Tâche ---------------//
+  // -----------  Méthodes pour sérialisation et désérialisation ---------------//
+
+  factory GroupeTask.fromJson(Map<String, dynamic> json) =>
+      _$GroupeTaskFromJson(json);
+  Map<String, dynamic> toJson() => _$GroupeTaskToJson(this);
 }
