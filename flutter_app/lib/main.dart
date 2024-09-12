@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'screens/view-acceil-task-screen.dart';
 import 'package:flutter_app/pages/page-home.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_app/themes-styles/app-theme.dart';
 import 'package:flutter_app/pages/page-formulaire-login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

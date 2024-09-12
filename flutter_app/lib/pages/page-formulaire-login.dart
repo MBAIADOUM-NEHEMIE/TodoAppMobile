@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_app/pages/page-home.dart';
+// import 'package:flutter_app/pages/page-home.dart';
 import 'package:flutter_app/themes-styles/app-theme.dart';
 import 'package:flutter_app/widgets/widget-alls-create.dart';
 import 'package:flutter_app/pages/page-formulaire-register.dart';
 import 'package:flutter_app/widgets/widget-formulaire-login.dart';
 import 'package:flutter_app/fonctions_util/all-fonctions-util.dart';
-import 'package:flutter_app/services/authentification_service.dart';
+// import 'package:flutter_app/services/authentification_service.dart';
 
 class WidgetFormulaireLogin extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class WidgetFormulaireLogin extends StatefulWidget {
 
 class _WidgetFormulaireLoginState extends State<WidgetFormulaireLogin> {
   bool _obscurePassword = true;
-  final AuthService _auth = AuthService(); // Instancier AuthService
+  // final AuthService _auth = AuthService(); // Instancier AuthService
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String error = '';
@@ -72,25 +72,25 @@ class _WidgetFormulaireLoginState extends State<WidgetFormulaireLogin> {
                     builderLoginButton(
                       buttonText: 'Login',
                       onPressed: () async {
-                        String email = _emailController.text;
-                        String password = _passwordController.text;
+                        // String email = _emailController.text;
+                        // String password = _passwordController.text;
 
-                        User? user =
-                            await _auth.signInWithEmail(email, password);
+                        // User? user =
+                        //     await _auth.signInWithEmail(email, password);
 
-                        if (user != null) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ),
-                          );
-                        } else {
-                          setState(() {
-                            error =
-                                'Erreur de connexion. Veuillez vérifier vos informations.';
-                          });
-                        }
+                        // if (user != null) {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => HomePage(),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   setState(() {
+                        //     error =
+                        //         'Erreur de connexion. Veuillez vérifier vos informations.';
+                        //   });
+                        // }
                         // Action de connexion
                       },
                     ),
