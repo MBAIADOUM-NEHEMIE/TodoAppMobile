@@ -1,2 +1,2 @@
 # todo-app-mobile
-![Les images de l'App](flutter_app/doc/imagesApp)
+![Quelques images de l'Application](flutter_app/doc/imagesApp)
