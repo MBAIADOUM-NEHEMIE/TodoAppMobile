@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/screens/view-detail-task-screen.dart';
-import 'package:flutter_app/themes-styles/app-style.dart';
+import 'package:flutter_app/screens/view_detail_task_screen.dart';
+import 'package:flutter_app/themes-styles/app_style.dart';
 import '../models/task.dart';
 
 class TaskList extends StatelessWidget {
   final List<Task> tasks;
 
-  TaskList({required this.tasks});
+  const TaskList({super.key, required this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,8 @@ class TaskList extends StatelessWidget {
             );
           },
           child: Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(15),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(10),
@@ -35,7 +35,7 @@ class TaskList extends StatelessWidget {
               children: [
                 Text(
                   task.titre,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text('Date: ${task.dateDebut.toLocal()}'),
                 Text('Heure: ${task.dateDebut.hour}:${task.dateDebut.minute}'),
@@ -74,14 +74,14 @@ class CreateSousTaskDialog extends StatefulWidget {
   final Task parentTask; // Ajoutez cette ligne pour recevoir la tâche parente
   final Function(SousTask) onSousTaskCreated;
 
-  CreateSousTaskDialog(
-      {required this.parentTask, required this.onSousTaskCreated});
+  const CreateSousTaskDialog(
+      {super.key, required this.parentTask, required this.onSousTaskCreated});
 
   @override
-  _CreateSousTaskDialogState createState() => _CreateSousTaskDialogState();
+  CreateSousTaskDialogState createState() => CreateSousTaskDialogState();
 }
 
-class _CreateSousTaskDialogState extends State<CreateSousTaskDialog> {
+class CreateSousTaskDialogState extends State<CreateSousTaskDialog> {
   final TextEditingController nameController = TextEditingController();
   bool _isComplete = false;
 
@@ -89,7 +89,7 @@ class _CreateSousTaskDialogState extends State<CreateSousTaskDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: const Color.fromARGB(253, 53, 52, 52),
-      title: Text(
+      title: const Text(
         'Créer une Nouvelle Sous-tâche',
         style: TextStyle(color: AppColors.texteColor),
       ),
@@ -98,11 +98,12 @@ class _CreateSousTaskDialogState extends State<CreateSousTaskDialog> {
         children: [
           TextField(
             controller: nameController,
-            decoration: InputDecoration(labelText: 'Nom de la Sous-tâche'),
+            decoration:
+                const InputDecoration(labelText: 'Nom de la Sous-tâche'),
           ),
           Row(
             children: [
-              Text('Est complété:',
+              const Text('Est complété:',
                   style: TextStyle(color: AppColors.texteColor)),
               Checkbox(
                 value: _isComplete,
@@ -128,13 +129,13 @@ class _CreateSousTaskDialogState extends State<CreateSousTaskDialog> {
                 newSubTask); // Ajoute la sous-tâche à la tâche parente
             Navigator.of(context).pop(); // Ferme le dialogue
           },
-          child: Text('Créer'),
+          child: const Text('Créer'),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Ferme le dialogue
           },
-          child: Text('Annuler'),
+          child: const Text('Annuler'),
         ),
       ],
     );

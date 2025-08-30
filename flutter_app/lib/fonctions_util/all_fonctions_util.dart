@@ -1,18 +1,21 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/task.dart';
-import 'package:flutter_app/pages/page-home.dart';
-import 'package:flutter_app/models/groupe-task.dart';
-import 'package:flutter_app/screens/view-add-groupe-screen.dart';
-import 'package:flutter_app/themes-styles/app-style.dart';
-import 'package:flutter_app/screens/view-add-task-screen.dart';
-import 'package:flutter_app/widgets/widget-groupe.dart';
+import 'package:flutter_app/pages/page_home.dart';
+import 'package:flutter_app/models/groupe_task.dart';
+import 'package:flutter_app/screens/view_add_groupe_screen.dart';
+import 'package:flutter_app/themes-styles/app_style.dart';
+import 'package:flutter_app/screens/view_add_task_screen.dart';
+import 'package:flutter_app/widgets/widget_groupe.dart';
 
 // fonction pour actualiser la page
 
 void refreshPage(BuildContext context) {
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
-      builder: (BuildContext context) => HomePage(),
+      builder: (BuildContext context) => const HomePage(),
     ),
   );
 }
@@ -34,7 +37,7 @@ Widget builderSubtitle(
   return Column(
     children: [
       Text(subtitleText1, style: AppTextStyles.titre2),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Text(subtitleText2, style: AppTextStyles.textbody3),
     ],
   );
@@ -42,20 +45,39 @@ Widget builderSubtitle(
 
 // fonction pour les buttons
 
-Widget builderLoginButton(
-    {required VoidCallback onPressed, required String buttonText}) {
+typedef AsyncVoidCallback = FutureOr<void> Function();
+
+Widget builderLoginButton({
+  required AsyncVoidCallback onPressed,
+  required String buttonText,
+  bool isLoading = false,
+  Color? backgroundColor,
+}) {
   return ElevatedButton(
-    onPressed: onPressed,
     style: AppButtonStyles.buttonNivau1,
-    child: Text(buttonText),
+    onPressed: isLoading ? null : () => _executeCallback(onPressed),
+    child: isLoading
+        ? const CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          )
+        : Text(buttonText),
   );
 }
 
+Future<void> _executeCallback(AsyncVoidCallback callback) async {
+  try {
+    await callback();
+  } catch (_) {
+    // L'erreur est déjà gérée par l'appelant
+  }
+}
+
+// fonction pour le button de mot de passe oublié
 Widget builderForgotPasswordButton(
     {required VoidCallback onPressed, String text = 'Mot de passe oublié ?'}) {
   return TextButton(
     onPressed: onPressed,
-    child: Text(text, style: TextStyle(color: Colors.blue)),
+    child: Text(text, style: const TextStyle(color: Colors.blue)),
   );
 }
 
@@ -64,12 +86,12 @@ Widget builderForgotPasswordButton(
 Widget builderDividerWithText(String text) {
   return Row(
     children: [
-      Expanded(child: Divider(thickness: 1)),
+      const Expanded(child: Divider(thickness: 1)),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Text(text, style: AppTextStyles.textbody4),
       ),
-      Expanded(child: Divider(thickness: 1)),
+      const Expanded(child: Divider(thickness: 1)),
     ],
   );
 }
@@ -83,6 +105,24 @@ Widget builderBackButton(BuildContext context,
     onPressed: () {
       Navigator.pop(context); // Revenir en arrière
     },
+  );
+}
+
+// Fonction pour la construction du widget Register
+Widget builderRegisterButton({
+  required FutureOr<void> Function() onPressed,
+  required String buttonText,
+}) {
+  return ElevatedButton(
+    style: AppButtonStyles.buttonNivau1,
+    onPressed: () async {
+      try {
+        await onPressed(); // Fonctionne avec VoidCallback ET Future
+      } catch (_) {
+        // L'erreur est gérée par l'appelant
+      }
+    },
+    child: Text(buttonText),
   );
 }
 
@@ -117,15 +157,15 @@ Widget buildTextWithLink({
 AppBar buildAppBar(BuildContext context,
     {required Function onMenuTap, required Function onUserTap}) {
   return AppBar(
-    title: Text('To-Do List'),
+    title: const Text('To-Do List'),
     actions: [
       IconButton(
-        icon: Icon(Icons.menu),
+        icon: const Icon(Icons.menu),
         onPressed: () =>
             onMenuTap(), // Appel de fonction pour ouvrir le menu latéral
       ),
       IconButton(
-        icon: Icon(Icons.account_circle),
+        icon: const Icon(Icons.account_circle),
         onPressed: () =>
             onUserTap(), // Appel de la fonction pour gérer l'utilisateur
       ),
@@ -143,30 +183,30 @@ Widget buildNavbar({
 }) {
   return BottomAppBar(
     shape:
-        CircularNotchedRectangle(), // Fonction qui permet de réaliser la forme avec une encoche pour le bouton flottant
+        const CircularNotchedRectangle(), // Fonction qui permet de réaliser la forme avec une encoche pour le bouton flottant
     notchMargin: 0.0, // Marge autour de la forme ou de l'encoche
     color: AppColors.navbarColor,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         IconButton(
-          icon: Icon(Icons.home),
+          icon: const Icon(Icons.home),
           color: AppColors.primaryColor,
           onPressed: () => onHomeTap(),
         ),
         IconButton(
-          icon: Icon(Icons.calendar_today),
+          icon: const Icon(Icons.calendar_today),
           color: AppColors.primaryColor,
           onPressed: () => onCalendarTap(),
         ),
-        SizedBox(width: 40), // Espace pour le bouton flottant
+        const SizedBox(width: 40), // Espace pour le bouton flottant
         IconButton(
-          icon: Icon(Icons.access_time),
+          icon: const Icon(Icons.access_time),
           color: AppColors.primaryColor, // Couleur de l'icône
           onPressed: () => onClockTap(),
         ),
         IconButton(
-          icon: Icon(Icons.account_circle),
+          icon: const Icon(Icons.account_circle),
           color: AppColors.primaryColor,
           onPressed: () => onProfileTap(),
         ),
@@ -182,11 +222,11 @@ Widget buildFloatingActionButton({
   return FloatingActionButton(
     onPressed: () =>
         onPlusTap(), // Appel de la fonction lors du clic sur le bouton flottant
-    // Ajout de l'icône du bouton flottant
-    child: Icon(Icons.add),
     // Couleur de fond du bouton flottant
     backgroundColor: AppColors.bouttonColor,
-    shape: CircleBorder(), // Assure que le bouton est rond (par défaut)
+    shape: const CircleBorder(), // Assure que le bouton est rond (par défaut)
+    // Ajout de l'icône du bouton flottant
+    child: const Icon(Icons.add),
   );
 }
 
@@ -211,14 +251,14 @@ Widget buildListOrMessage(
 }
 
 // Fonction pour montrer le formulaire dans un Dialog
-void _showCreateTaskFormDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return CreateTaskFormDialog(); // Afficher le formulaire
-    },
-  );
-}
+// void _showCreateTaskFormDialog(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return CreateTaskFormDialog(); // Afficher le formulaire
+//     },
+//   );
+// }
 
 // Fonction pour la création des champs de texte pour la creation des tâches et la fonction pour le button validé
 //
@@ -247,7 +287,7 @@ Widget buildDateField({
   required InputDecoration decoration,
   required BuildContext context, // Passer le context comme paramètre
 }) {
-  final TextEditingController _controller = TextEditingController(
+  final TextEditingController controller = TextEditingController(
     text: date != null ? date.toLocal().toString().split(' ')[0] : '',
   );
 
@@ -259,16 +299,16 @@ Widget buildDateField({
         icon: Icon(Icons.calendar_today, color: textStyle.color),
         onPressed: () async {
           await selectDate(context);
-          _controller.text =
+          controller.text =
               date != null ? date.toLocal().toString().split(' ')[0] : '';
         },
       ),
     ),
-    controller: _controller,
+    controller: controller,
     readOnly: true,
     onTap: () async {
       await selectDate(context);
-      _controller.text =
+      controller.text =
           date != null ? date.toLocal().toString().split(' ')[0] : '';
     },
   );
@@ -305,7 +345,7 @@ Widget buildActionButtons({
       Column(
         children: [
           IconButton(
-            icon: Icon(Icons.check, color: Colors.blueAccent),
+            icon: const Icon(Icons.check, color: Colors.blueAccent),
             onPressed: onSendPressed,
           ),
           Text('Enregister',
@@ -330,7 +370,8 @@ Future<void> dateSelectionCalender(BuildContext context) async {
               .primaryColor, // Utilisez la couleur primaire de votre thème
           hintColor: AppColors
               .primaryColor, // Utilisez la couleur d'accent de votre thème
-          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
         ),
         child: child!,
       );
@@ -339,12 +380,13 @@ Future<void> dateSelectionCalender(BuildContext context) async {
 
   if (selectedDate != null && selectedDate != DateTime.now()) {
     // Afficher la date sélectionnée
-    print("Date sélectionnée: ${selectedDate.toLocal()}");
+    log("Date sélectionnée: ${selectedDate.toLocal()}");
   }
 }
 
 // Fonction pour montrer le sélecteur d'heure dans un Dialog
-Future<void> slecteTimeHorloge(BuildContext context) async {
+Future<void> slecteTimeHorloge(
+    BuildContext context, ValueChanged<TimeOfDay> onTimeSelected) async {
   TimeOfDay? selectedTime = await showTimePicker(
     context: context,
     initialTime: TimeOfDay.now(),
@@ -355,16 +397,17 @@ Future<void> slecteTimeHorloge(BuildContext context) async {
               .primaryColor, // Utilisez la couleur primaire de votre thème
           hintColor: AppColors
               .primaryColor, // Utilisez la couleur d'accent de votre thème
-          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
         ),
         child: child!,
       );
     },
   );
 
-  if (selectedTime != null) {
-    // Action à effectuer avec l'heure sélectionnée
-    print("Heure sélectionnée: ${selectedTime.format(context)}");
+  // Vérifiez si le widget est toujours monté avant d'utiliser `context`
+  if (selectedTime != null && context.mounted) {
+    onTimeSelected(selectedTime);
   }
 }
 
@@ -381,7 +424,7 @@ void showGroupSelector(
     ),
   );
 
-  void _addNewGroup(GroupeTask newGroup) {
+  void addNewGroup(GroupeTask newGroup) {
     groups.add(newGroup); // Ajoute le nouveau groupe à la liste
   }
 
@@ -389,7 +432,7 @@ void showGroupSelector(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Sélectionnez un Groupe'),
+        title: const Text('Sélectionnez un Groupe'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -399,7 +442,7 @@ void showGroupSelector(
                 onGroupSelected: onGroupSelected,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -407,7 +450,7 @@ void showGroupSelector(
                   builder: (BuildContext context) {
                     return CreateGroupDialog(
                       onGroupCreated: (newGroup) {
-                        _addNewGroup(newGroup);
+                        addNewGroup(newGroup);
                         Navigator.of(context)
                             .pop(); // Ferme le dialogue de création
                         Navigator.of(context)
@@ -416,7 +459,7 @@ void showGroupSelector(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Sélectionnez un Groupe'),
+                              title: const Text('Sélectionnez un Groupe'),
                               content: GroupGrid(
                                 groups: groups,
                                 onGroupSelected: onGroupSelected,
@@ -429,7 +472,7 @@ void showGroupSelector(
                   },
                 );
               },
-              child: Text(
+              child: const Text(
                 'Créer un Nouveau Groupe',
                 style: AppTextStyles
                     .textbutton1, // Assurez-vous que ce style est défini
@@ -491,7 +534,7 @@ void showCreateTaskFormDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return CreateTaskFormDialog();
+      return const CreateTaskFormDialog();
     },
   );
 }

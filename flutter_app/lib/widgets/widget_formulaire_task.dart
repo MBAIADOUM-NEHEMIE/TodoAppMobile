@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/themes-styles/app-style.dart';
+import 'package:flutter_app/themes-styles/app_style.dart';
 
 // Gestion des champs de saisi du formulaire
 
@@ -10,7 +10,8 @@ class CustomTextField extends StatelessWidget {
   final TextStyle textStyle;
   final InputDecoration decoration;
 
-  CustomTextField({
+  const CustomTextField({
+    super.key,
     required this.label,
     required this.controller,
     required this.onSaved,
@@ -40,7 +41,8 @@ class DatePickerField extends StatelessWidget {
   final TextStyle textStyle;
   final InputDecoration decoration;
 
-  DatePickerField({
+  const DatePickerField({
+    super.key,
     required this.label,
     required this.date,
     required this.onDateChanged,
@@ -72,7 +74,8 @@ class ActionButtons extends StatelessWidget {
   final VoidCallback onGroupPickerPressed;
   final VoidCallback onSendPressed;
 
-  ActionButtons({
+  const ActionButtons({
+    super.key,
     required this.onTimePickerPressed,
     required this.onGroupPickerPressed,
     required this.onSendPressed,
@@ -84,7 +87,7 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.access_time,
             color: AppColors.primaryColor,
           ),
@@ -92,12 +95,12 @@ class ActionButtons extends StatelessWidget {
           tooltip: 'Choisir Heure',
         ),
         IconButton(
-          icon: Icon(Icons.group, color: AppColors.primaryColor),
+          icon: const Icon(Icons.group, color: AppColors.primaryColor),
           onPressed: onGroupPickerPressed,
           tooltip: 'Choisir Groupe',
         ),
         IconButton(
-          icon: Icon(Icons.check, color: Colors.green),
+          icon: const Icon(Icons.check, color: Colors.green),
           onPressed: onSendPressed,
           tooltip: 'Valider',
         ),

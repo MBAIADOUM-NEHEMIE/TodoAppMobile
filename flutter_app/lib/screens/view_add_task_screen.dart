@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/groupe-task.dart';
-import 'package:flutter_app/models/task.dart';
-import 'package:flutter_app/widgets/widget-alls-create.dart';
-import 'package:flutter_app/themes-styles/app-style.dart';
-import 'package:flutter_app/widgets/widget-formulaire-task.dart';
-import 'package:flutter_app/fonctions_util/all-fonctions-util.dart';
+import 'package:flutter_app/models/groupe_task.dart';
+import 'package:flutter_app/widgets/widget_alls_create.dart';
+import 'package:flutter_app/themes-styles/app_style.dart';
+import 'package:flutter_app/widgets/widget_formulaire_task.dart';
+import 'package:flutter_app/fonctions_util/all_fonctions_util.dart';
 
-class EditeTaskFormDialog extends StatefulWidget {
-  final Task? taskToEdit;
-
-  EditeTaskFormDialog({this.taskToEdit});
+class CreateTaskFormDialog extends StatefulWidget {
+  const CreateTaskFormDialog({super.key});
 
   @override
-  _EditeTaskFormDialogState createState() => _EditeTaskFormDialogState();
+  CreateTaskFormDialogState createState() => CreateTaskFormDialogState();
 }
 
-class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
+class CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
   final _formKey = GlobalKey<FormState>();
   String? _title;
   String? _description;
@@ -28,27 +25,6 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
   final TextEditingController _endDateController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-
-    if (widget.taskToEdit != null) {
-      // Initialisez les champs avec les valeurs de la tâche
-      _title = widget.taskToEdit!.titre;
-      _description = widget.taskToEdit!.description;
-      _startDate = widget.taskToEdit!.dateDebut;
-      _endDate = widget.taskToEdit!.dateFin;
-      _priority = widget.taskToEdit!.priorite.toString();
-      _selectedGroup = widget.taskToEdit!.groupe;
-
-      _startDateController.text = _startDate != null
-          ? _startDate!.toLocal().toString().split(' ')[0]
-          : '';
-      _endDateController.text =
-          _endDate != null ? _endDate!.toLocal().toString().split(' ')[0] : '';
-    }
-  }
-
-  @override
   void dispose() {
     _startDateController.dispose();
     _endDateController.dispose();
@@ -57,8 +33,8 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: AppColors.texteColor);
-    final inputDecoration = InputDecoration(
+    const textStyle = TextStyle(color: AppColors.texteColor);
+    const inputDecoration = InputDecoration(
       labelStyle: textStyle,
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: AppColors.texteColor),
@@ -75,7 +51,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
           padding: const EdgeInsets.all(20.0),
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.9,
-            maxHeight: MediaQuery.of(context).size.height * 0.9,
+            maxHeight: MediaQuery.of(context).size.height * 0.45,
           ),
           decoration: BoxDecoration(
             color: Colors.grey[850]?.withOpacity(0.9),
@@ -97,7 +73,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                     textStyle: textStyle,
                     decoration: inputDecoration,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   CustomTextField(
                     label: 'Description',
                     controller: TextEditingController(text: _description),
@@ -105,7 +81,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                     textStyle: textStyle,
                     decoration: inputDecoration,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   DatePickerField(
                     label: 'Début',
                     date: _startDate,
@@ -128,7 +104,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                     decoration: inputDecoration,
                     context: context,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   DatePickerField(
                     label: 'Fin',
                     date: _endDate,
@@ -151,7 +127,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                     decoration: inputDecoration,
                     context: context,
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   PrioritySelector(
                     selectedPriority: _priority,
                     onPrioritySelected: (value) {
@@ -160,7 +136,7 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                       });
                     },
                   ),
-                  SizedBox(height: 24.0),
+                  const SizedBox(height: 24.0),
                   ActionButtons(
                     onTimePickerPressed: () {
                       showTimePicker(
@@ -185,17 +161,14 @@ class _EditeTaskFormDialogState extends State<EditeTaskFormDialog> {
                     onSendPressed: () {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
-
-                        if (widget.taskToEdit != null) {
-                          // Si la tâche existe, mettez à jour ses valeurs
-                          widget.taskToEdit!
-                            ..titre = _title!
-                            ..description = _description!
-                            ..dateDebut = _startDate!
-                            ..dateFin = _endDate!
-                            ..priorite = PrioriteTask.values
-                                .firstWhere((e) => e.toString() == _priority)
-                            ..groupe = _selectedGroup!;
+                        if (_selectedGroup == null) {
+                          // Afficher un message d'erreur
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Veuillez sélectionner un groupe'),
+                            ),
+                          );
+                          return;
                         }
                         Navigator.of(context).pop();
                       }

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MenusLateral extends StatelessWidget {
+  const MenusLateral({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          UserAccountsDrawerHeader(
+          const UserAccountsDrawerHeader(
             accountName: Text('Nom d\'Utilisateur'),
             accountEmail: Text('email@example.com'),
             currentAccountPicture: CircleAvatar(
@@ -22,37 +24,37 @@ class MenusLateral extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Accueil'),
+            leading: const Icon(Icons.home),
+            title: const Text('Accueil'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/home');
             },
           ),
           ListTile(
-            leading: Icon(Icons.assignment),
-            title: Text('Mes Tâches'),
+            leading: const Icon(Icons.assignment),
+            title: const Text('Mes Tâches'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/tasks');
             },
           ),
           ListTile(
-            leading: Icon(Icons.add),
-            title: Text('Ajouter une Tâche'),
+            leading: const Icon(Icons.add),
+            title: const Text('Ajouter une Tâche'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/add-task');
             },
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Paramètres'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Paramètres'),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Déconnexion'),
+            leading: const Icon(Icons.logout),
+            title: const Text('Déconnexion'),
             onTap: () {
               // logique pour déconnexion
               Navigator.pushReplacementNamed(context, '/login');

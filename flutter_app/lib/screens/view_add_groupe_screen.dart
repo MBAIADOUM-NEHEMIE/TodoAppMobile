@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/groupe-task.dart';
-import 'package:flutter_app/widgets/widget-alls-create.dart';
+import 'package:flutter_app/models/groupe_task.dart';
+import 'package:flutter_app/widgets/widget_alls_create.dart';
 
 class CreateGroupDialog extends StatefulWidget {
   final Function(GroupeTask) onGroupCreated;
 
-  CreateGroupDialog({required this.onGroupCreated});
+  const CreateGroupDialog({super.key, required this.onGroupCreated});
 
   @override
-  _CreateGroupDialogState createState() => _CreateGroupDialogState();
+  CreateGroupDialogState createState() => CreateGroupDialogState();
 }
 
-class _CreateGroupDialogState extends State<CreateGroupDialog> {
+class CreateGroupDialogState extends State<CreateGroupDialog> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   IconData _selectedIcon = Icons.star; // Icône par défaut
@@ -34,7 +34,7 @@ class _CreateGroupDialogState extends State<CreateGroupDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Créer un Nouveau Groupe'),
+      title: const Text('Créer un Nouveau Groupe'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -48,11 +48,11 @@ class _CreateGroupDialogState extends State<CreateGroupDialog> {
           ),
           TextField(
             controller: nameController,
-            decoration: InputDecoration(labelText: 'Nom du Groupe'),
+            decoration: const InputDecoration(labelText: 'Nom du Groupe'),
           ),
           TextField(
             controller: descriptionController,
-            decoration: InputDecoration(labelText: 'Description'),
+            decoration: const InputDecoration(labelText: 'Description'),
           ),
         ],
       ),
@@ -70,13 +70,13 @@ class _CreateGroupDialogState extends State<CreateGroupDialog> {
             widget.onGroupCreated(newGroup);
             Navigator.of(context).pop(); // Ferme le dialogue
           },
-          child: Text('Créer'),
+          child: const Text('Créer'),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Ferme le dialogue
           },
-          child: Text('Annuler'),
+          child: const Text('Annuler'),
         ),
       ],
     );

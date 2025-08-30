@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'groupe-task.dart';
+part of 'groupe_task.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

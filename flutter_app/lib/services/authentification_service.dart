@@ -1,60 +1,62 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+// lib/services/auth_service.dart
+import 'package:firebase_auth/firebase_auth.dart';
 
-// class AuthService {
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class AuthService {
+  static Future<User?> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+      return credential.user;
+    } on FirebaseAuthException catch (e) {
+      throw _handleAuthError(e.code); // Utilisation de votre méthode existante
+    }
+  }
 
-//   // Connexion avec email et mot de passe
-//   Future<User?> signInWithEmail(String email, String password) async {
-//     try {
-//       UserCredential result = await _auth.signInWithEmailAndPassword(
-//           email: email, password: password);
-//       return result.user;
-//     } catch (e) {
-//       print('Erreur lors de la connexion : ${e.toString()}');
-//       return null;
-//     }
-//   }
+  // Déclarez la méthode comme publique pour la réutiliser ailleurs
+  static String translateAuthError(String code) {
+    switch (code) {
+      case 'user-not-found':
+        return 'Email non enregistré';
+      case 'wrong-password':
+        return 'Mot de passe incorrect';
+      case 'invalid-email':
+        return 'Format email invalide';
+      case 'user-disabled':
+        return 'Compte désactivé';
+      case 'too-many-requests':
+        return 'Trop de tentatives. Réessayez plus tard';
+      case 'operation-not-allowed':
+        return 'Méthode de connexion désactivée';
+      default:
+        return 'Erreur de connexion (Code: $code)'; // Ajout du code pour le débogage
+    }
+  }
 
-//   // Inscription avec email et mot de passe
-//   Future<User?> registerWithEmail(
-//       String userName, String email, String password) async {
-//     try {
-//       UserCredential result = await _auth.createUserWithEmailAndPassword(
-//           email: email, password: password);
-//       User? user = result.user;
+  // Alias pour la compatibilité (gardez l'ancien nom si utilisé ailleurs)
+  static String _handleAuthError(String code) => translateAuthError(code);
 
-//       // Ajouter le nom dans Firestore
-//       if (user != null) {
-//         await _firestore.collection('users').doc(user.uid).set({
-//           'userName': userName,
-//           'email': email,
-//         });
-//       }
-//       return user;
-//     } catch (e) {
-//       print('Erreur lors de l\'inscription : ${e.toString()}');
-//       return null;
-//     }
-//   }
+  // Ajoutez d'autres méthodes ici
 
-//   // Déconnexion
-//   Future<void> signOut() async {
-//     try {
-//       await _auth.signOut();
-//     } catch (e) {
-//       print('Erreur lors de la déconnexion : ${e.toString()}');
-//     }
-//   }
-
-//   // Réinitialiser le mot de passe
-//   Future<void> resetPassword(String email) async {
-//     try {
-//       await _auth.sendPasswordResetEmail(email: email);
-//     } catch (e) {
-//       print(
-//           'Erreur lors de la réinitialisation du mot de passe : ${e.toString()}');
-//     }
-//   }
-// }
+  // lib/services/auth_service.dart
+  static Future<User?> registerUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.trim(),
+        password: password.trim(),
+      );
+      return credential.user;
+    } on FirebaseAuthException catch (e) {
+      throw translateAuthError(
+          e.code); // Réutilise la même traduction d'erreurs
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widgets/widget-alls-create.dart';
+import 'package:flutter_app/widgets/widget_alls_create.dart';
 
 Widget buildFormLogin({
   required bool obscurePassword,
@@ -14,8 +14,9 @@ Widget buildFormLogin({
         icon: Icons.person,
         labelText: 'Votre mail',
         hintText: 'Entrez votre mail',
+        validator: (val) => val!.contains('@') ? null : 'Email invalide',
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       TextFieldAvecIcon(
         controller: passwordController,
         icon: Icons.lock,
@@ -29,6 +30,7 @@ Widget buildFormLogin({
           ),
           onPressed: onPasswordToggle,
         ),
+        validator: (val) => val!.contains('@') ? null : 'Password invalide',
       ),
       // validator: (val) =>
       // val!.length < 6 ? 'Entrez un mot de passe de 6+ caractères' : null,

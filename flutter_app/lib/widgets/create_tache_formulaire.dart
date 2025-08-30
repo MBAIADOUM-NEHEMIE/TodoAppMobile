@@ -1,18 +1,24 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fonctions_util/all-fonctions-util.dart';
-import 'package:flutter_app/widgets/widget-alls-create.dart';
+import 'package:flutter_app/fonctions_util/all_fonctions_util.dart';
+import 'package:flutter_app/widgets/widget_alls_create.dart';
 
 class CreateTaskFormDialog extends StatefulWidget {
+  const CreateTaskFormDialog({super.key});
+
   @override
-  _CreateTaskFormDialogState createState() => _CreateTaskFormDialogState();
+  CreateTaskFormDialogState createState() => CreateTaskFormDialogState();
 }
 
-class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
+class CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
   final _formKey = GlobalKey<FormState>();
   String? _title;
   String? _description;
   DateTime? _startDate;
   DateTime? _endDate;
+  TimeOfDay? _startTime;
+  TimeOfDay? _endTime;
   String? _priority;
 
   final TextEditingController _startDateController = TextEditingController();
@@ -27,14 +33,14 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: Colors.white);
-    final inputDecoration = InputDecoration(
+    const textStyle = TextStyle(color: Colors.white);
+    const inputDecoration = InputDecoration(
       labelStyle: textStyle,
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: Colors.white),
       ),
     );
-    final actionTextStyle = TextStyle(fontSize: 12, color: Colors.white);
+    const actionTextStyle = TextStyle(fontSize: 12, color: Colors.white);
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -69,14 +75,14 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
                         textStyle: textStyle,
                         decoration: inputDecoration,
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       buildTextField(
                         label: 'Description',
                         onSaved: (value) => _description = value,
                         textStyle: textStyle,
                         decoration: inputDecoration,
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       buildDateField(
                         label: 'Début',
                         date: _startDate,
@@ -88,12 +94,12 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
                                 : '';
                           });
                         },
-                        selectDate: _selectStartDate,
+                        selectDate: (context) => _selectDateTime(context, true),
                         textStyle: textStyle,
                         decoration: inputDecoration,
                         context: context,
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       buildDateField(
                         label: 'Fin',
                         date: _endDate,
@@ -105,12 +111,12 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
                                 : '';
                           });
                         },
-                        selectDate: _selectEndDate,
+                        selectDate: (context) => _selectDateTime(context, true),
                         textStyle: textStyle,
                         decoration: inputDecoration,
                         context: context,
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       PrioritySelector(
                         selectedPriority: _priority,
                         onPrioritySelected: (value) {
@@ -119,7 +125,7 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
                           });
                         },
                       ),
-                      SizedBox(height: 24.0),
+                      const SizedBox(height: 24.0),
                       buildActionButtons(
                         onTimePickerPressed: () {
                           showTimePicker(
@@ -135,10 +141,11 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
                           // Fonction qui permet d'Ouvrir et de sélectionner un groupe
                         },
                         onSendPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            _formKey.currentState?.save();
-                            Navigator.of(context).pop();
-                          }
+                          _submitForm();
+                          // if (_formKey.currentState?.validate() ?? false) {
+                          //   _formKey.currentState?.save();
+                          //   Navigator.of(context).pop();
+                          // }
                         },
                         actionTextStyle: actionTextStyle,
                       ),
@@ -153,31 +160,113 @@ class _CreateTaskFormDialogState extends State<CreateTaskFormDialog> {
     );
   }
 
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> _selectDateTime(BuildContext context, bool isStartDate) async {
+    // 1. Sélection de la date
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _startDate ?? DateTime.now(),
+      initialDate: isStartDate
+          ? _startDate ?? DateTime.now()
+          : _endDate ?? (_startDate ?? DateTime.now()),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _startDate) {
+
+    if (pickedDate == null || !mounted) return;
+
+    // 2. Sélection de l'heure
+    final TimeOfDay? pickedTime = await showTimePicker(
+      // ignore: use_build_context_synchronously
+      context: context,
+      initialTime: isStartDate
+          ? _startTime ?? TimeOfDay.now()
+          : _endTime ?? TimeOfDay.now(),
+    );
+
+    if (pickedTime != null && mounted) {
       setState(() {
-        _startDate = picked;
+        final newDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        if (isStartDate) {
+          _startDate = newDateTime;
+          _startTime = pickedTime;
+          // Validation: Si endDate est avant startDate, on le réinitialise
+          if (_endDate != null && _endDate!.isBefore(newDateTime)) {
+            _endDate = null;
+            _endTime = null;
+          }
+        } else {
+          _endDate = newDateTime;
+          _endTime = pickedTime;
+        }
       });
     }
   }
 
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _endDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != _endDate) {
-      setState(() {
-        _endDate = picked;
-      });
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // Validation supplémentaire
+      if (_startDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("La date de début est obligatoire")),
+        );
+        return;
+      }
+
+      if (_priority == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("La priorité est obligatoire")),
+        );
+        return;
+      }
+
+      final task = {
+        'title': _title,
+        'description': _description,
+        'startDate': _startDate,
+        'endDate': _endDate,
+        'priority': _priority,
+      };
+
+      log("Tâche créée: $task");
+      Navigator.of(context).pop(task); // Renvoie les données
     }
   }
 }
+
+//   Future<void> _selectStartDate(BuildContext context) async {
+//     final DateTime? picked = await showDatePicker(
+//       context: context,
+//       initialDate: _startDate ?? DateTime.now(),
+//       firstDate: DateTime(2000),
+//       lastDate: DateTime(2101),
+//     );
+//     if (picked != null && picked != _startDate) {
+//       setState(() {
+//         _startDate = picked;
+//       });
+//     }
+//   }
+
+//   Future<void> _selectEndDate(BuildContext context) async {
+//     final DateTime? picked = await showDatePicker(
+//       context: context,
+//       initialDate: _endDate ?? DateTime.now(),
+//       firstDate: DateTime(2000),
+//       lastDate: DateTime(2101),
+//     );
+//     if (picked != null && picked != _endDate) {
+//       setState(() {
+//         _endDate = picked;
+//       });
+//     }
+//   }
+// }
+

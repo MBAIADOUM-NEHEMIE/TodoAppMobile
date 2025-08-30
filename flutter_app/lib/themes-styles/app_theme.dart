@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static BoxDecoration get backgroundDecoration {
-    return BoxDecoration(
+    return const BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topRight,
         end: Alignment.bottomLeft,
@@ -20,16 +20,16 @@ class AppTheme {
       // Appliquez le style des boutons ici
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFFD17118), // Couleur de fond du bouton
+          backgroundColor: const Color(0xFFD17118), // Couleur de fond du bouton
           foregroundColor: Colors.white, // Couleur du texte
-          textStyle: TextStyle(
+          textStyle: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15), // Arrondi des coins
           ),
-          minimumSize: Size(250, 60), // Taille minimale du bouton
+          minimumSize: const Size(250, 60), // Taille minimale du bouton
         ),
       ),
       scaffoldBackgroundColor: Colors

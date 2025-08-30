@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_app/themes-styles/app-style.dart';
+import 'package:flutter_app/themes-styles/app_style.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -17,8 +17,8 @@ class WidgetSuperieur extends StatelessWidget {
     this.svgImagePath,
     this.pngImagePath,
     // this.appBarTitle = 'To-Do App', // Valeur par défaut
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +52,8 @@ class WidgetSuperieur extends StatelessWidget {
 }
 
 class SocialButtons extends StatelessWidget {
+  const SocialButtons({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,14 +72,14 @@ class SocialButtons extends StatelessWidget {
                 // }
               },
               style: AppButtonStyles.buttonNivau2.copyWith(
-                backgroundColor:
-                    MaterialStateProperty.all(Color.fromARGB(255, 240, 81, 60)),
-                minimumSize: MaterialStateProperty.all(Size(60, 20)),
+                backgroundColor: WidgetStateProperty.all(
+                    const Color.fromARGB(255, 240, 81, 60)),
+                minimumSize: WidgetStateProperty.all(const Size(60, 20)),
               ),
-              icon: Icon(FontAwesomeIcons.google, color: Colors.white),
-              label: Text('Google'),
+              icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
+              label: const Text('Google'),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             ElevatedButton.icon(
               onPressed: () async {
                 // final LoginResult result = await FacebookAuth.instance.login();
@@ -90,15 +92,16 @@ class SocialButtons extends StatelessWidget {
                 // }
               },
               style: AppButtonStyles.buttonNivau2.copyWith(
-                backgroundColor: MaterialStateProperty.all(Colors.blue[800]),
-                minimumSize: MaterialStateProperty.all(Size(60, 20)),
+                backgroundColor: WidgetStateProperty.all(Colors.blue[800]),
+                minimumSize: WidgetStateProperty.all(const Size(60, 20)),
               ),
-              icon: Icon(Icons.facebook, color: Colors.white),
-              label: Text('Facebook'),
+              icon: const Icon(Icons.facebook, color: Colors.white),
+              label: const Text('Facebook'),
             ),
           ],
         ),
-        SizedBox(height: 20), // Espace entre les boutons sociaux et le texte
+        const SizedBox(
+            height: 20), // Espace entre les boutons sociaux et le texte
       ],
     );
   }
@@ -113,12 +116,14 @@ class TextFieldAvecIcon extends StatelessWidget {
   final TextEditingController? controller;
 
   const TextFieldAvecIcon({
+    super.key,
     required this.icon,
     required this.labelText,
     required this.hintText,
     this.obscureText = false,
     this.suffixIcon,
     this.controller,
+    required String? Function(dynamic val) validator,
   });
 
   @override
@@ -129,14 +134,14 @@ class TextFieldAvecIcon extends StatelessWidget {
         Row(
           children: [
             Icon(icon, color: Colors.black),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Text(
               labelText,
               style: AppTextStyles.bodyText,
             ),
           ],
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         TextField(
           controller: controller,
           obscureText: obscureText,
@@ -156,23 +161,17 @@ class PrioritySelector extends StatelessWidget {
   final String? selectedPriority;
   final ValueChanged<String> onPrioritySelected;
 
-  PrioritySelector(
-      {required this.selectedPriority, required this.onPrioritySelected});
+  const PrioritySelector(
+      {super.key,
+      required this.selectedPriority,
+      required this.onPrioritySelected});
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      child: Container(
-        width: double.infinity,
-        child: Text(
-          selectedPriority == null ? 'Priorité' : 'Priorité: $selectedPriority',
-          style: TextStyle(color: Colors.white),
-          textAlign: TextAlign.center,
-        ),
-      ),
       onSelected: onPrioritySelected,
       itemBuilder: (BuildContext context) => [
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'basse',
           child: Row(
             children: [
@@ -182,7 +181,7 @@ class PrioritySelector extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'moyenne',
           child: Row(
             children: [
@@ -192,7 +191,7 @@ class PrioritySelector extends StatelessWidget {
             ],
           ),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'haute',
           child: Row(
             children: [
@@ -203,6 +202,14 @@ class PrioritySelector extends StatelessWidget {
           ),
         ),
       ],
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          selectedPriority == null ? 'Priorité' : 'Priorité: $selectedPriority',
+          style: const TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }
@@ -210,7 +217,7 @@ class PrioritySelector extends StatelessWidget {
 class SelectIconDialog extends StatelessWidget {
   final Function(IconData) onIconSelected;
 
-  SelectIconDialog({required this.onIconSelected});
+  const SelectIconDialog({super.key, required this.onIconSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -224,9 +231,9 @@ class SelectIconDialog extends StatelessWidget {
     ];
 
     return AlertDialog(
-      title: Text('Choisir une Icône'),
+      title: const Text('Choisir une Icône'),
       content: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4, // Nombre de colonnes dans la grille
           crossAxisSpacing: 8.0, // Espacement horizontal entre les icônes
           mainAxisSpacing: 8.0, // Espacement vertical entre les icônes

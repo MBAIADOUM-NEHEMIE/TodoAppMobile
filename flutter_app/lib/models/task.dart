@@ -1,4 +1,4 @@
-import 'package:flutter_app/models/groupe-task.dart';
+import 'package:flutter_app/models/groupe_task.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'task.g.dart';
 

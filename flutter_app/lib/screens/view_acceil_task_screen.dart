@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/fonctions_util/all-fonctions-util.dart';
-import 'package:flutter_app/themes-styles/app-theme.dart';
-import 'package:flutter_app/pages/page-formulaire-login.dart';
-import 'package:flutter_app/widgets/widget-alls-create.dart';
+import 'package:flutter_app/fonctions_util/all_fonctions_util.dart';
+import 'package:flutter_app/themes-styles/app_theme.dart';
+import 'package:flutter_app/pages/page_formulaire_login.dart';
+import 'package:flutter_app/widgets/widget_alls_create.dart';
 
 class AccueilTaskScreen extends StatelessWidget {
+  const AccueilTaskScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +20,20 @@ class AccueilTaskScreen extends StatelessWidget {
         decoration: AppTheme.backgroundDecoration,
         child: Column(
           children: [
-            WidgetSuperieur(
+            const WidgetSuperieur(
               svgImagePath: 'assets/images/widget-sup.svg',
               pngImagePath: 'assets/images/image-group-widget-supp.png',
               // appBarTitle: 'To-do Liste',
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(16),
-                      child: Column(
+                      padding: const EdgeInsets.all(16),
+                      child: const Column(
                         children: [
                           Text(
                             'Regrouper et Organiser touts vos tâches et sous-tâche ',
@@ -41,28 +43,26 @@ class AccueilTaskScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            child: builderLoginButton(
-                              onPressed: () {
-                                // Navigation vers la page du formulaire
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          WidgetFormulaireLogin()),
-                                );
+                    Column(
+                      children: [
+                        Container(
+                          child: builderLoginButton(
+                            onPressed: () {
+                              // Navigation vers la page du formulaire
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const WidgetFormulaireLogin()),
+                              );
 
-                                // Logique du bouton ici
-                              },
-                              // child: Text('Lets Start'),
-                              buttonText: 'Lets Start',
-                            ),
+                              // Logique du bouton ici
+                            },
+                            // child: Text('Lets Start'),
+                            buttonText: 'Lets Start',
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
